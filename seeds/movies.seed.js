@@ -1,3 +1,8 @@
+
+const mongoose = require('mongoose');
+const Movie = require('../models/Movie.Model');
+
+const MONGODB_URI = process.env.MONGODB_URI
 const movies = [
     {
       title: "A Wrinkle in Time",
@@ -84,6 +89,16 @@ const movies = [
 
 // Add here the script that will be run to actually seed the database (feel free to refer to the previous lesson)
 
-  
+mongoose
+.connect(MONGODB_URI)
+.then(() => {
+  console.log('Connected to MongoDB');
+  return Movie.insertMany(movies);
+})
+.then(() => {
+  console.log('Movies seeded successfully');
+  mongoose.connection.close();
+})
+.catch(err => console.error('Error seeding movies:', err));
 
 // ... your code here
